@@ -9,7 +9,7 @@ metadata:
     description.en: Update ServiceStage application
     readme.zh-CN: 更新 ServiceStage 应用
     readme.en: Update ServiceStage application
-    version: "1.0.0"
+    version: "1.0.1"
   labels:
     category: CD
 spec:
@@ -64,9 +64,9 @@ spec:
     required: true
   - name: "credentialID"
     schema:
-      type: alauda.io/jenkinscredentials
-    display:
       type: string
+    display:
+      type: alauda.io/jenkinscredentials
       advanced: true
       name:
         zh-CN: "credential"
