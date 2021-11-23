@@ -1,0 +1,165 @@
+apiVersion: devops.alauda.io/v1alpha1
+kind: ClusterPipelineTaskTemplate
+metadata:
+  name: updateServiceStage
+  annotations:
+    displayName.zh-CN: 更新 ServiceStage 应用
+    displayName.en: Update ServiceStage application
+    description.zh-CN: 更新 ServiceStage 应用
+    description.en: Update ServiceStage application
+    readme.zh-CN: 更新 ServiceStage 应用
+    readme.en: Update ServiceStage application
+    version: "1.0.0"
+  labels:
+    category: CD
+spec:
+  engine: gotpl
+  body: |+
+    script {
+      container('tools'){
+        withCredentials([usernamePassword(credentialsId: "{{.credentialID}}", passwordVariable: "PASSWD", usernameVariable: "USER")]) {
+          sh (script: "servicestage update --basedomain={{.basedomain}} --region={{.region}} --username=${USER} --password=${PASSWD}  --domain={{.domain}} --project={{.project}} --application={{.application}} --component={{.component}} --instance={{.instance}} --artifactName={{.artifactName}} --artifact={{.artifact}} --version={{.version}}",returnStdout: true).trim()
+        }
+      }
+
+    }
+  arguments:
+  - name: "basedomain"
+    schema:
+      type: string
+    display:
+      type: string
+      name:
+        zh-CN: "HCS BaseDomain"
+        en: "HCS BaseDomain"
+      description:
+        zh-CN: "HCS BaseDomain"
+        en: "HCS BaseDomain"
+    required: true
+  - name: "region"
+    schema:
+      type: string
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "HCS Region"
+        en: "HCS Region"
+      description:
+        zh-CN: "HCS Region"
+        en: "HCS Region"
+    required: true
+  - name: "domain"
+    schema:
+      type: string
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "租户名称"
+        en: "domain of current user"
+      description:
+        zh-CN: "租户名称"
+        en: "domain of current user"
+    required: true
+  - name: "credentialID"
+    schema:
+      type: alauda.io/jenkinscredentials
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "credential"
+        en: "HCS 用户凭据"
+      description:
+        zh-CN: "credential"
+        en: "HCS 用户凭据"
+    required: true
+  - name: "project"
+    schema:
+      type: string
+    required: true
+    display:
+      type: string
+      name:
+        zh-CN: "资源集名称"
+        en: "project name"
+      description:
+        zh-CN: "资源集名称"
+        en: "project name"
+  - name: "application"
+    schema:
+      type: string
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "应用名称"
+        en: "application Name"
+      description:
+        zh-CN: "应用名称"
+        en: "application Name"
+    required: true
+  - name: "component"
+    schema:
+      type: string
+    required: true
+    display:
+      type: string
+      name:
+        zh-CN: "组件名称"
+        en: "component name"
+      description:
+        zh-CN: "组件名称"
+        en: "component name"
+  - name: "instance"
+    schema:
+      type: string
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "实例名称"
+        en: "instance name"
+      description:
+        zh-CN: "实例名称"
+        en: "instance name"
+    required: true
+  - name: "artifactName"
+    schema:
+      type: string
+    required: true
+    display:
+      type: string
+      name:
+        zh-CN: "待更新制品名称"
+        en: "artifact name"
+      description:
+        zh-CN: "待更新制品名称"
+        en: "artifact name"
+  - name: "artifact"
+    schema:
+      type: string
+    required: true
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "制品地址"
+        en: "artifact URL"
+      description:
+        zh-CN: "制品地址"
+        en: "artifact URL"
+  - name: "version"
+    schema:
+      type: string
+    required: true
+    display:
+      type: string
+      advanced: true
+      name:
+        zh-CN: "component 版本号"
+        en: "component version"
+      description:
+        zh-CN: "component 版本号"
+        en: "component version"
