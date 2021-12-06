@@ -9,7 +9,7 @@ metadata:
     description.en: Update ServiceStage application
     readme.zh-CN: 更新 ServiceStage 应用
     readme.en: Update ServiceStage application
-    version: "1.0.3"
+    version: "1.0.4"
   labels:
     category: CD
 spec:
